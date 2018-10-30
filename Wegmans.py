@@ -74,6 +74,28 @@ def customer():
 	id = int(input("Please enter your ID Number: "))
 	while True:
 		print("Thank you for logging into the system. Here is what you can do:")
+		print("0. Exit")
+		print("1. Make a purchase")
+		print("2. Get store info")
+		choice = int(input("Please enter the number of the action you'd like to take:"))
+		if choice == 0:
+			print("Logging out...")
+			break
+		elif choice == 1:
+			while True:
+				itemName = input("Enter the name of the item you would like to purchase or type exit: ")
+				if itemName.lower() == "exit":
+					#database operations
+					print("Your total is")
+					break
+				itemAmount = int(input("Please enter the number of this item you would like to purchase: "))
+		elif choice == 2:
+			#database operations
+			print("Our store hours are:")
+			print("MWF 11-5pm")
+			print("Address: 1 Lomb Memorial Dr.")
+		else:
+			print("Incorrect choice. Please try again")
 
 
 def main():
