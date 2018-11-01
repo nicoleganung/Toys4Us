@@ -4,14 +4,9 @@
 # Chris Renninger
 # Wegmans UI Database
 
-import psycopg2
+import psycopg2 
 
-conn = psycopg2.connect(
-	host="reddwarf.cs.rit.edu",
-	database="p32002h",
-	user="p32002h",
-	password="eigo0oapooj8ENgeGhue")
-
+conn = psycopg2.connect(host="reddwarf.cs.rit.edu", user="p32002h", password="eigo0oapooj8ENgeGhue", dbname="p32002h")
 cursor = conn.cursor();
 
 def shoppersClubCustomer():
@@ -110,6 +105,8 @@ def customer():
 
 def main():
 	cursor.execute("SELECT * FROM store")
+	for data in cursor:
+		print(data)
 	empOrCust = input('Please enter if you are an employee, vendor, or customer: ')
 	if empOrCust.lower() == "employee":
 		employee()
