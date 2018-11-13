@@ -22,8 +22,22 @@ def itemPurchase():
 	numItems = input("How many different items are you buying today?")
 
 def employee():
-	id = int(input("Please enter your ID Number: "))
-	while True:
+	employeeId = int(input("Please enter your ID Number: "))
+	# search for ID number
+	employeeExists = false
+	cursor.execute("SELECT employee_id FROM employee")
+	# for data in cursor:
+		# if data == employeeId
+			# employeeExists = true
+	# while !employeeExists 
+		# print("You are not an employee in our system, please try again")
+		# employeeId = int(input("Please enter your ID Number: "))
+		# cursor.execute("SELECT employee_id FROM employee")
+		# for data in cursor:
+			# if data == employeeId
+				# employeeExists = true
+
+	while employeeExists:
 		print("Thank you for logging into the system. Here is what you can do.")
 		print("0. Exit")
 		print("1. Look at 20 most recent items purchased")
@@ -77,6 +91,8 @@ def vendor():
 
 def customer():
 	id = int(input("Please enter your ID Number: "))
+	# database operation 
+	# verify ID exists 
 	while True:
 		print("Thank you for logging into the system. Here is what you can do:")
 		print("0. Exit")
