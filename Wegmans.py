@@ -24,20 +24,24 @@ def itemPurchase():
 def employee():
 	employeeId = int(input("Please enter your ID Number: "))
 	# search for ID number
-	employeeExists = false
-	cursor.execute("SELECT employee_id FROM employee")
-	# for data in cursor:
-		# if data == employeeId
-			# employeeExists = true
-	# while !employeeExists 
-		# print("You are not an employee in our system, please try again")
-		# employeeId = int(input("Please enter your ID Number: "))
-		# cursor.execute("SELECT employee_id FROM employee")
-		# for data in cursor:
-			# if data == employeeId
-				# employeeExists = true
+	employeeExists = False
+	cursor.execute('SELECT employee_id FROM employee WHERE employee_id = %s', (employeeId,))
+	myresult = cursor.fetchall()
+	for data in myresult:
+		if data[0] == employeeId:
+			employeeExists = True
 
-	while employeeExists:
+	while not employeeExists:
+		print("You are not an employee in our system, please try again")
+		employeeId = int(input("Please enter your ID Number: "))
+		cursor.execute('SELECT employee_id FROM employee WHERE employee_id = %s', (employeeId,))
+		myresult = cursor.fetchall();
+		for data in myresult:
+			if data[0] == employeeId:
+				employeeExists = True
+			break
+
+	while True:
 		print("Thank you for logging into the system. Here is what you can do.")
 		print("0. Exit")
 		print("1. Look at 20 most recent items purchased")
@@ -120,9 +124,6 @@ def customer():
 
 
 def main():
-	cursor.execute("SELECT * FROM store")
-	for data in cursor:
-		print(data)
 	empOrCust = input('Please enter if you are an employee, vendor, or customer: ')
 	if empOrCust.lower() == "employee":
 		employee()
