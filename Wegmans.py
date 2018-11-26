@@ -26,6 +26,8 @@ def employee():
 	# search for ID number
 	employeeExists = False
 	cursor.execute('SELECT employee_id FROM employee WHERE employee_id = %s', (employeeId,))
+	# fetchall() gives back a array of inputs 
+	# fetchone() gives back one element 
 	myresult = cursor.fetchall()
 	for data in myresult:
 		if data[0] == employeeId:
@@ -53,12 +55,19 @@ def employee():
 			break
 		elif choice == 1:
 			#database operations
+			counter = 0
+			cursor.execute('SELECT * FROM receipt')
+			receiptResult = cursor.fetchall()
+			for data in receiptResult:
+				print(data[counter], " units of ", data[counter+1], " purchased for", data[counter+2], " on ", data[counter+3])
 			print("x units of y purchased for $z on [Date]")
 			print("x units of y purchased for $z on [Date]")
 			print("x units of y purchased for $z on [Date]")
 			print(".....")
 		elif choice == 2:
 			#database operations
+			counter = 1 
+			# cursor.execute('SELECT * FROM inventory')
 			print("Items with low inventory are: ")
 			print("Coke: 25 units")
 			print("Bread: 10 units")
@@ -66,12 +75,15 @@ def employee():
 			itemName = input("Enter the name of the item you would like to order: ")
 			itemAmount = int(input("Please enter the number of this item you would like to order: "))
 			#database operations
+			#cursor.execute('SELECT * FROM inventory')
 			print(str(itemAmount) + " units of " + itemName + " ordered")
 		else:
 			print("Incorrect choice. Please try again")
 
 def vendor():
 	id = int(input("Please enter your ID Number: "))
+	# If it doesn't exist:
+	# Would you like to create a account?
 	while True:
 		print("Thank you for logging into the system. Here is what you can do:")
 		print("0. Exit")
