@@ -166,8 +166,12 @@ def customer(storeNumber):
 			#cursor.execute('SELECT upc from product where name = %s',(product,))
 			break
 		elif choice == 4:
+			cursor.execute('SELECT * FROM receipt full outer join product on receipt.upc = product.upc WHERE receipt.shopper_club_id = %s order by date desc', (customerID,))
+			myresult = cursor.fetchall();
 			# view receipts
-			break
+			for data in myresult:
+				print("Receipt ID:", data[0], "Date Purchased:", data[3], "Product:", data[9], "Price:", data[2])
+			print()
 		else:
 			print("Incorrect choice. Please try again")
 
