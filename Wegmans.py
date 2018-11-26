@@ -108,15 +108,33 @@ def vendor():
 			print("Incorrect choice. Please try again")
 
 def customer():
-	id = int(input("Please enter your ID Number: "))
-	# database operation 
-	# verify ID exists 
+	customerID = int(input("Please enter your Shoppers Club ID Number: "))
+	# search for ID number
+	customerExists = False
+	cursor.execute('SELECT shopper_club_id FROM customer WHERE shopper_club_id = %s', (customerID,))
+	myresult = cursor.fetchall()
+	for data in myresult:
+		if data[0] == customerID:
+			customerExists = True
+
+	while not customerExists:
+		print("Your ID number was not recognized, for the store's card enter 0")
+		customerID = int(input("Please enter your ID Number: "))
+		cursor.execute('SELECT shopper_club_id FROM customer WHERE shopper_club_id = %s', (customerID,))
+		myresult = cursor.fetchall();
+		for data in myresult:
+			if data[0] == customerID:
+				customerExists = True
+			break
+
+	print("Thank you for logging into the system.")
 	while True:
-		print("Thank you for logging into the system. Here is what you can do:")
+		print("Here's a list of the action you can do")
 		print("0. Exit")
 		print("1. Make a purchase")
 		print("2. Get store info")
-		choice = int(input("Please enter the number of the action you'd like to take:"))
+		print("3. Get product info")
+		choice = int(input("Please enter the number of the action you'd like to take: "))
 		if choice == 0:
 			print("Logging out...")
 			break
@@ -129,10 +147,17 @@ def customer():
 					break
 				itemAmount = int(input("Please enter the number of this item you would like to purchase: "))
 		elif choice == 2:
+			storeNumber = input("Enter the store number you would like information for: ")
 			#database operations
-			print("Our store hours are:")
-			print("MWF 11-5pm")
-			print("Address: 1 Lomb Memorial Dr.")
+			cursor.execute('SELECT open_hour, close_hour FROM store WHERE store_number = %s', (storeNumber,))
+			myresult = cursor.fetchone();
+
+			print("Store opens: " + myresult[0])
+			print("Store closes: " + myresult[1])
+
+			# print("Our store hours are:")
+			# print("MWF 11-5pm")
+			# print("Address: 1 Lomb Memorial Dr.")
 		else:
 			print("Incorrect choice. Please try again")
 
