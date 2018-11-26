@@ -63,7 +63,7 @@ def employee(storeNumber):
 				timestamp = data[1]
 				date = str(timestamp.month) + '/' + str(timestamp.day) + '/' + str(timestamp.year)
 				price = float(data[2])
-				print str(data[0]) + ' purchased for $' + str(price) + ' on ' + str(date)
+				print(str(data[0]) + ' purchased for $' + str(price) + ' on ' + str(date))
 			print
 		elif choice == 2:
 			print
@@ -134,6 +134,7 @@ def customer(storeNumber):
 		print("1. Make a purchase")
 		print("2. Get store info")
 		print("3. Get product info")
+		print("4. View receipts")
 		choice = int(input("Please enter the number of the action you'd like to take: "))
 		if choice == 0:
 			print("Logging out...")
@@ -146,18 +147,27 @@ def customer(storeNumber):
 					print("Your total is")
 					break
 				itemAmount = int(input("Please enter the number of this item you would like to purchase: "))
+
 		elif choice == 2:
-			storeNumber = input("Enter the store number you would like information for: ")
 			#database operations
-			cursor.execute('SELECT open_hour, close_hour FROM store WHERE store_number = %s', (storeNumber,))
+			cursor.execute('SELECT open_hour, close_hour, address_id FROM store WHERE store_number = %s', (storeNumber))
 			myresult = cursor.fetchone();
+			print()
+			print("Store opens:", myresult[0])
+			print("Store closes:", myresult[1])
+			cursor.execute('SELECT house_number, street_name, city, state, zip from address where address.address_id = %s', (storeNumber,))
+			myresult = cursor.fetchone();
+			print("Store Address:", myresult[0], myresult[1], myresult[2], ",", myresult[3], myresult[4])
+			print()
 
-			print("Store opens: " + myresult[0])
-			print("Store closes: " + myresult[1])
-
-			# print("Our store hours are:")
-			# print("MWF 11-5pm")
-			# print("Address: 1 Lomb Memorial Dr.")
+		elif choice == 3:
+			# get product info
+			product = input("Please enter the product you are looking for: ")
+			#cursor.execute('SELECT upc from product where name = %s',(product,))
+			break
+		elif choice == 4:
+			# view receipts
+			break
 		else:
 			print("Incorrect choice. Please try again")
 
