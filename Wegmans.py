@@ -22,7 +22,7 @@ def shoppersClubPurchase(shoppersClubName):
 def itemPurchase():
 	numItems = input("How many different items are you buying today?")
 
-def employee():
+def employee(storeNumber):
 	employeeId = int(input("Please enter your ID Number: "))
 	# search for ID number
 	employeeExists = False
@@ -82,7 +82,7 @@ def employee():
 		else:
 			print("Incorrect choice. Please try again")
 
-def vendor():
+def vendor(storeNumber):
 	id = int(input("Please enter your ID Number: "))
 	# If it doesn't exist:
 	# Would you like to create a account?
@@ -107,7 +107,7 @@ def vendor():
 		else:
 			print("Incorrect choice. Please try again")
 
-def customer():
+def customer(storeNumber):
 	customerID = int(input("Please enter your Shoppers Club ID Number: "))
 	# search for ID number
 	customerExists = False
@@ -163,13 +163,14 @@ def customer():
 
 
 def main():
+	storeNumber = input("What store is this? ")
 	empOrCust = input('Please enter if you are an employee, vendor, or customer: ')
 	if empOrCust.lower() == "employee":
-		employee()
+		employee(storeNumber)
 	elif empOrCust.lower() == "customer":
-		customer()
+		customer(storeNumber)
 	elif empOrCust.lower() == "vendor":
-		vendor()
+		vendor(storeNumber)
 
 if __name__ == '__main__':
     main()
