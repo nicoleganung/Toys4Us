@@ -66,9 +66,9 @@ def employee():
 				print str(data[0]) + ' purchased for $' + str(price) + ' on ' + str(date)
 			print
 		elif choice == 2:
+			print
 			#database operations
-			counter = 1 
-			# cursor.execute('SELECT * FROM inventory')
+			cursor.execute('SELECT * FROM inventory_item WHERE inventory_id IN (SELECT inventory_id FROM store WHERE store_number = 0) AND amount < 30')
 			print("Items with low inventory are: ")
 			print("Coke: 25 units")
 			print("Bread: 10 units")
