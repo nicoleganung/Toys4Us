@@ -63,21 +63,26 @@ def employee(storeNumber):
 				timestamp = data[1]
 				date = str(timestamp.month) + '/' + str(timestamp.day) + '/' + str(timestamp.year)
 				price = float(data[2])
-				print str(data[0]) + ' purchased for $' + str(price) + ' on ' + str(date)
+				print(str(data[0]) + ' purchased for $' + str(price) + ' on ' + str(date))
 			print
 		elif choice == 2:
 			print
-			#database operations
-			cursor.execute('SELECT * FROM inventory_item WHERE inventory_id IN (SELECT inventory_id FROM store WHERE store_number = 0) AND amount < 30')
+			# database operations
+			# any less than 30
+			cursor.execute('SELECT i.amount, p.name FROM inventory_item as i, product as p WHERE inventory_id IN (SELECT inventory_id FROM store WHERE store_number = %s) AND amount < 30 AND i.upc = p.upc;', (storeNumber,))
+			myresult = cursor.fetchall()
 			print("Items with low inventory are: ")
-			print("Coke: 25 units")
-			print("Bread: 10 units")
+			for data in myresult:
+				print(str(data[1]) + ': ' + str(data[0]) + ' unit(s)')
+			print
 
 		elif choice == 3:
 			itemName = input("Enter the name of the item you would like to order: ")
 			itemAmount = int(input("Please enter the number of this item you would like to order: "))
 			#database operations
-			#cursor.execute('SELECT * FROM inventory')
+			cursor.execute('SELECT i.upc FROM inventory_item AS i, product AS p WHERE p.name LIKE %s AND i.upc=p.upc', (itemName,))
+			upc = cursor.fetchone()
+			cursor.execute('UPDATE inventory_item SET amount=amount+%i WHERE product.upc = %s',(itemAmount,),(upc,))
 			print(str(itemAmount) + " units of " + itemName + " ordered")
 		else:
 			print("Incorrect choice. Please try again")
@@ -158,7 +163,7 @@ def customer(storeNumber):
 			# print("Our store hours are:")
 			# print("MWF 11-5pm")
 			# print("Address: 1 Lomb Memorial Dr.")
-		else:
+		else: 
 			print("Incorrect choice. Please try again")
 
 
