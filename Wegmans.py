@@ -5,6 +5,7 @@
 # Wegmans UI Database
 
 import psycopg2 
+import datetime
 
 conn = psycopg2.connect(host="reddwarf.cs.rit.edu", user="p32002h", password="eigo0oapooj8ENgeGhue", dbname="p32002h")
 cursor = conn.cursor();
@@ -54,16 +55,16 @@ def employee():
 			print("Logging out...")
 			break
 		elif choice == 1:
+			print
 			#database operations
-			counter = 0
-			cursor.execute('SELECT * FROM receipt')
+			cursor.execute('SELECT DISTINCT p.name, date, r.price_paid FROM receipt AS r, product AS p WHERE r.upc = p.upc GROUP BY p.upc, r.upc, r.date, r.price_paid ORDER BY date DESC LIMIT 20')
 			receiptResult = cursor.fetchall()
 			for data in receiptResult:
-				print(data[counter], " units of ", data[counter+1], " purchased for", data[counter+2], " on ", data[counter+3])
-			print("x units of y purchased for $z on [Date]")
-			print("x units of y purchased for $z on [Date]")
-			print("x units of y purchased for $z on [Date]")
-			print(".....")
+				timestamp = data[1]
+				date = str(timestamp.month) + '/' + str(timestamp.day) + '/' + str(timestamp.year)
+				price = float(data[2])
+				print str(data[0]) + ' purchased for $' + str(price) + ' on ' + str(date)
+			print
 		elif choice == 2:
 			#database operations
 			counter = 1 
@@ -71,6 +72,7 @@ def employee():
 			print("Items with low inventory are: ")
 			print("Coke: 25 units")
 			print("Bread: 10 units")
+
 		elif choice == 3:
 			itemName = input("Enter the name of the item you would like to order: ")
 			itemAmount = int(input("Please enter the number of this item you would like to order: "))
