@@ -114,20 +114,17 @@ def vendor():
             # database operations
             cursor.execute("Select upc from product where name = '"+itemName+"'")
             result = cursor.fetchone()
-            if len(result) == 0:
+            if result == None:
                 print("Not a valid product. Please try again")
                 break
             itemUPC = result[0]
             cursor.execute("Select * from inventory_item where upc = "+ str(itemUPC) +" and inventory_id in (select inventory_id from vendor where vendor_id = %s)", (vendorId,))
             result = cursor.fetchone()
-            if len(result) == 0:
+            if result == None:
                 print("Item not in inventory. Please try again")
                 break
             cursor.execute("update inventory_item set amount = "+ str(int(result[3]) + itemAmount) + " where upc = " + str(itemUPC))
             print(str(itemAmount) + " units of " + itemName + " ordered")
-            cursor.execute("Select * from inventory_item where upc = " + str(
-            itemUPC) + " and inventory_id in (select inventory_id from vendor where vendor_id = %s)", (vendorId,))
-            result = cursor.fetchone()
         else:
             print("Incorrect choice. Please try again")
 
