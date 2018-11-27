@@ -113,13 +113,13 @@ def vendor():
             itemAmount = int(input("Please enter the number of this item you would like to order: "))
             # database operations
             cursor.execute("Select upc from product where name = '"+itemName+"'")
-            result = cursor.fetchall()
+            result = cursor.fetchone()
             if len(result) == 0:
                 print("Not a valid product. Please try again")
                 break
             itemUPC = result[0]
             cursor.execute("Select * from inventory_item where upc = "+ str(itemUPC) +" and inventory_id in (select inventory_id from vendor where vendor_id = %s)", (vendorId,))
-            result = cursor.fetchall()
+            result = cursor.fetchone()
             if len(result) == 0:
                 print("Item not in inventory. Please try again")
                 break
