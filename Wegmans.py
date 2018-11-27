@@ -162,9 +162,14 @@ def customer(storeNumber):
 
 		elif choice == 3:
 			# get product info
-			product = input("Please enter the product you are looking for: ")
-			#cursor.execute('SELECT upc from product where name = %s',(product,))
-			break
+			product = input("Please enter the product you are looking for (case sensitive): ")
+			cursor.execute('SELECT p.name, price, packaging_type, size from product p left join product_type pt on p.upc = pt.upc left join inventory_item inv on inv.upc = pt.upc where p.name = %s',(product,))
+			myresult = cursor.fetchone();
+			if myresult is None:
+					print("Product not carreid in this store.")
+			else:
+				print("Name:", myresult[0], "Price: $", myresult[1], "Packaging Type:", myresult[2], "Size:", myresult[3], "oz")
+			print ()
 		elif choice == 4:
 			cursor.execute('SELECT * FROM receipt full outer join product on receipt.upc = product.upc WHERE receipt.shopper_club_id = %s order by date desc', (customerID,))
 			myresult = cursor.fetchall();
